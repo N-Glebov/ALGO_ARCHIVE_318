@@ -1,0 +1,12 @@
+#include <iostream> //i/o library
+using namespace std; //instead of prefix std::
+
+int main() //header
+{ //begin
+    int a; //variable declaration
+    cout << "Enter valua a : "; //outputting text to the console
+    cin >> a; //entering a variable from the console
+    int res = a - 5; //calculation of the result
+    cout << "a-5: "<< res; //posting the result to the console
+    return 0; //return to OS
+} //end
