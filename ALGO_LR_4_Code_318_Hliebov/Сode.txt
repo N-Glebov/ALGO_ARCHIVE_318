@@ -1,0 +1,134 @@
+#include <iostream>
+#include <cmath>
+using namespace std;
+
+// *** Task 1: RectPS ***
+// Оголошення функції RectPS
+void RectPS(double x1, double y1, double x2, double y2, double &P, double &S) {
+    double length = abs(x2 - x1);
+    double width = abs(y2 - y1);
+    P = 2 * (length + width);
+    S = length * width;
+}
+
+// Функція для Task 1
+void task_1() {
+    cout << "Task 1: RectPS" << endl;
+    double x1, y1, x2, y2, P, S;
+
+    // Введення координат
+    cout << "Введіть координати (x1, y1) та (x2, y2): ";
+    cin >> x1 >> y1 >> x2 >> y2;
+
+    // Виклик RectPS
+    RectPS(x1, y1, x2, y2, P, S);
+
+    // Виведення результатів
+    cout << "Периметр прямокутника: " << P << endl;
+    cout << "Площа прямокутника: " << S << endl;
+}
+
+// *** Task 2: Boolean3 ***
+// Перевірка парності числа
+bool isEven(int A) {
+    return A % 2 == 0;
+}
+
+// Введення даних і перевірка коректності
+bool inputBoolean3(int &A) {
+    cout << "Введіть ціле число A: ";
+    cin >> A;
+    if (A < -100 || A > 100) {
+        cout << "Число повинно бути в діапазоні [-100, 100]!" << endl;
+        return false;
+    }
+    return true;
+}
+
+// Функція для Task 2
+void task_2() {
+    cout << "Task 2: Boolean3" << endl;
+    int A;
+
+    // Введення і перевірка
+    if (!inputBoolean3(A)) return;
+
+    // Перевірка істинності твердження
+    if (isEven(A)) {
+        cout << "Число A є парним." << endl;
+    } else {
+        cout << "Число A не є парним." << endl;
+    }
+}
+
+// *** Task 3: Integer8 ***
+// Введення даних
+bool inputInteger8(int &A) {
+    cout << "Введіть двозначне число: ";
+    cin >> A;
+
+    if (A < 10 || A > 99) {
+        cout << "Число повинно бути двозначним!" << endl;
+        return false;
+    }
+    return true;
+}
+
+// Обчислення нового числа після перестановки цифр
+int swapDigits(int A) {
+    int tens = A / 10;
+    int units = A % 10;
+    return units * 10 + tens;
+}
+
+// Виведення результату
+void outputResultInteger8(int result) {
+    cout << "Число після перестановки цифр: " << result << endl;
+}
+
+// Функція для Task 3
+void task_3() {
+    cout << "Task 3: Integer8" << endl;
+    int A;
+
+    // Введення і перевірка
+    if (!inputInteger8(A)) return;
+
+    // Розрахунок і виведення
+    int result = swapDigits(A);
+    outputResultInteger8(result);
+}
+
+// *** Меню для вибору завдання ***
+int main() {
+    int choice;
+
+    do {
+        cout << "\nМеню:\n";
+        cout << "1. Обчислення периметра і площі прямокутника\n";
+        cout << "2. Перевірка парності числа\n";
+        cout << "3. Перестановка цифр двозначного числа\n";
+        cout << "0. Вихід\n";
+        cout << "Ваш вибір: ";
+        cin >> choice;
+
+        switch (choice) {
+            case 1:
+                task_1();
+                break;
+            case 2:
+                task_2();
+                break;
+            case 3:
+                task_3();
+                break;
+            case 0:
+                cout << "Вихід з програми." << endl;
+                break;
+            default:
+                cout << "Невірний вибір. Спробуйте ще раз." << endl;
+        }
+    } while (choice != 0);
+
+    return 0;
+}
