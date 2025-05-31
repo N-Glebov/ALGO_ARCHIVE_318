@@ -1,0 +1,109 @@
+#include <iostream>
+#include <limits> // Для очищення буферу введення
+#include <vector>
+using namespace std;
+
+// Функція введення масиву
+vector<int> input_arr(int& in_n) {
+    cout << "Кількість елементів: ";
+    cin >> in_n;
+    cout << "Введіть елементи масиву: ";
+    vector<int> in_arr(in_n);
+    for (int i = 0; i < in_n; i++) {
+        cin >> in_arr[i];
+    }
+
+    return in_arr;
+}
+
+// Функція виведення масиву
+void output_arr(const vector<int> out_arr, int out_n) {
+    cout << "Елементи масиву: ";
+    for (int i = 0; i < out_n; i++) {
+        cout << out_arr[i] << " ";
+    }
+    cout << endl;
+}
+
+// Функція для підрахунку кількості проміжків монотонності
+int count_monotonic_segments(const vector<int> arr, int n) {
+    if (n < 2) return 0; // Якщо менше 2 елементів, проміжків немає
+    int count = 0;
+    int i = 0;
+
+    while (i < n - 1) {
+        // Знайти початок зростаючого або спадаючого проміжку
+        if (arr[i] < arr[i + 1]) { // Зростання
+            while (i < n - 1 && arr[i] < arr[i + 1]) i++;
+            count++;
+        }
+        else if (arr[i] > arr[i + 1]) { // Спадання
+            while (i < n - 1 && arr[i] > arr[i + 1]) i++;
+            count++;
+        }
+        else {
+            i++; // Пропустити рівні елементи
+        }
+    }
+
+    return count;
+}
+
+// Функція для виконання Завдання 1
+void task1() {
+    int n;
+    vector<int> arr = input_arr(n);       // Введення масиву
+    output_arr(arr, n);      // Виведення масиву
+    int segments = count_monotonic_segments(arr, n);
+    cout << "Кількість проміжків монотонності: " << segments << endl;
+}
+
+// Функція для зсуву масиву вліво
+void shift_left(vector<int>& arr, int n) {
+    for (int i = 0; i < n - 1; i++) {
+        arr[i] = arr[i + 1];
+    }
+    arr[n - 1] = 0; // Останній елемент = 0
+}
+
+// Функція для виконання Завдання 2
+void task2() {
+    int n;
+    vector<int> arr = input_arr(n);       // Введення масиву
+    output_arr(arr, n);      // Виведення початкового масиву
+    shift_left(arr, n);      // Зсув масиву
+    cout << "Масив після зсуву: ";
+    output_arr(arr, n);      // Виведення зміненого масиву
+}
+
+int main() {
+    int choice;
+    do {
+        // Виведення меню на окремих рядках
+        cout << "Оберіть завдання:" << endl;
+        cout << "1 - Проміжки монотонності" << endl;
+        cout << "2 - Зсув масиву вліво" << endl;
+        cout << "0 - Вихід" << endl;
+        cout << "Ваш вибір: ";
+        cin >> choice;
+
+        // Перевірка на коректність введення
+        if (cin.fail()) {
+            cin.clear(); // Скинути помилку
+            cin.ignore(numeric_limits<streamsize>::max(), '\n'); // Очистити буфер
+            cout << "Невірний вибір. Спробуйте ще раз." << endl;
+            continue;
+        }
+
+        switch (choice) {
+        case 1: task1(); break;
+        case 2: task2(); break;
+        case 0: cout << "Вихід з програми." << endl; break;
+        default: cout << "Невірний вибір. Спробуйте ще раз." << endl;
+        }
+
+        cout << endl; // Додати порожній рядок для зручності
+
+    } while (choice != 0);
+    return 0;
+}
