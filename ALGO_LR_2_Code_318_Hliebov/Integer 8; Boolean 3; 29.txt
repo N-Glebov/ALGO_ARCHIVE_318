@@ -1,0 +1,63 @@
+#include <iostream>
+#include <cmath>
+#include <cstdlib> // Для abs()
+
+using namespace std;
+
+int main() {
+    //Integer 8. Дано двозначне число. Вивести число, отримане при перестановці цифр вихідного числа.
+    // Введення даних
+    int number, firstDigit, secondDigit;
+    cout << "Введіть двозначне число: ";
+    cin >> number;
+
+    // Обчислення виразу
+    firstDigit = number / 10;
+    secondDigit = number % 10;
+    int newNumber = secondDigit * 10 + firstDigit;
+    
+    // Виведення результату
+    cout << "Число з переставленими цифрами: " << newNumber << endl;
+
+    //Boolean3. Дано ціле число A. Перевірити істинність висловлювання: «Число A є парним».
+    // Введення даних
+    cout << "Введіть ціле число: ";
+    cin >> number;
+
+    if (number % 2 == 0) {
+        cout << "Число парне" << endl;
+    } else {
+        cout << "Число непарне" << endl;
+    }
+
+    //Математичний вираз 29.
+    // Введення даних
+    double x;
+    cout << "Введіть значення x: ";
+    cin >> x;
+
+    // Перевірка на коректність значень, які входять у логарифм, тангенс та корені
+    if (x == 0) {
+    cout << "Помилка: підлогарифмічний вираз не може дорівнювати x > 0. " << endl;
+    return 1;
+    }
+    if (x % (M_PI / 2) == 0) {
+    cout << "Помилка: не иснуе тангенса 90, 180, 270, 360 градусив а так дали" << endl;
+    return 1;
+    }
+
+    // Обчислення виразу
+    double numerator = cbrt((pow(x, 3) / 4) - pow(sin(x), 2) * pow(x, 3) * 2) * log10(abs(x)) / log10(5);
+    double denominator = pow(2, x) * sqrt(abs(3 * x + 2.5 * abs(tan(x))));
+    double y = numerator / denominator;
+
+    // Виведення результату
+    cout << "Результат y: " << y << endl;
+
+    return 0;
+}
+
+
+
+
+
