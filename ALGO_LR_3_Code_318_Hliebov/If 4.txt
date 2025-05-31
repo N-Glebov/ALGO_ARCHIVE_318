@@ -1,0 +1,106 @@
+#include <iostream>
+#include <cmath>
+using namespace std;
+
+// Task 1: Вирішити завдання на алгоритми з розгалуженням.
+void countPositiveNumbers() {
+    int num1, num2, num3, count = 0;
+    cout << "Введіть три цілих числа: ";
+    cin >> num1 >> num2 >> num3;
+    if (num1 > 0) count++;
+    if (num2 > 0) count++;
+    if (num3 > 0) count++;
+    cout << "Кількість додатних чисел: " << count << endl;
+}
+
+//Task 2: Дано координати точки на площині (x, y). Визначити, чи потрапляє точка в фігуру заданого кольору (або групу фігур) і вивести відповідне повідомлення.
+void checkPointInFigure() {
+    double x, y; // Координати точки
+    double r1 = 1.0, r2 = 2.0, a = sqrt(2.0); 
+
+    // Введення координат точки
+    cout << "Введіть координати точки (x, y): ";
+    cin >> x >> y;
+
+    // Центри внутрішніх кіл
+    double x1 = a / sqrt(2.0);  // Центр першого внутрішнього кола
+    double y1 = a / sqrt(2.0);  
+    double x2 = -a / sqrt(2.0); // Центр другого внутрішнього кола
+    double y2 = -a / sqrt(2.0);
+
+    // Перевірка, чи точка у великому колі
+    bool inOuterCircle = pow(x, 2) + pow(y, 2) <= pow(r2, 2);
+
+    // Перевірка, чи точка поза обома внутрішніми колами
+    bool outsideFirstInnerCircle = pow(x - x1, 2) + pow(y - y1, 2) > pow(r1, 2);
+    bool outsideSecondInnerCircle = pow(x - x2, 2) + pow(y - y2, 2) > pow(r1, 2);
+
+    // Умова: точка має бути всередині зовнішнього кола, але поза внутрішніми колами
+    if (inOuterCircle && outsideFirstInnerCircle && outsideSecondInnerCircle) {
+        cout << "Точка потрапляє в фігуру." << endl;
+    } else {
+        cout << "Точка не потрапляє в фігуру." << endl;
+    }
+}
+
+// Task 3: Обчислити площу і периметр плоскої фігури.
+void calculateAreaPerimeter() {
+    double r1, r2;
+
+    // Введення радіусів
+    cout << "Введіть радіус внутрішніх кіл (r1): ";
+    cin >> r1;
+    cout << "Введіть радіус зовнішнього кола (r2): ";
+    cin >> r2;
+
+    // Перевірка коректності введення
+    if (r1 <= 0 || r2 <= 0 || r1 >= r2) {
+        cout << "Помилка: Радіус внутрішніх кіл має бути додатнім і меншим за радіус зовнішнього кола.\n";
+        return;
+    }
+
+    // Обчислення площі
+    double outerArea = M_PI * pow(r2, 2);
+    double innerArea = 2 * M_PI * pow(r1, 2); // Два внутрішніх кола
+    double totalArea = outerArea - innerArea;
+
+    // Обчислення периметра
+    double totalPerimeter = 2 * M_PI * r2;
+
+    // Виведення результатів
+    cout << "Площа фігури: " << totalArea << endl;
+    cout << "Периметр фігури: " << totalPerimeter << endl;
+}
+
+// Task 4: Для вибору користувачем одного з трьох зазначених вище завдань розробити алгоритм організації меню в командному вікні з використанням інструкції вибору.
+int main() {
+    int choice;
+    do {
+        cout << "\nМеню:\n";
+        cout << "1. Підрахувати кількість додатних чисел\n";
+        cout << "2. Перевірити попадання точки в фігуру\n";
+        cout << "3. Обчислити площу та периметр фігури\n";
+        cout << "0. Вихід\n";
+        cout << "Ваш вибір: ";
+        cin >> choice;
+
+        switch (choice) {
+            case 1:
+                countPositiveNumbers();
+                break;
+            case 2:
+                checkPointInFigure();
+                break;
+            case 3:
+                calculateAreaPerimeter();
+                break;
+            case 0:
+                cout << "Вихід з програми." << endl;
+                break;
+            default:
+                cout << "Невірний вибір. Спробуйте ще раз." << endl;
+        }
+    } while (choice != 0);
+
+    return 0;
+}
