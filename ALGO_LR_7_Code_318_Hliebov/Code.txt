@@ -1,0 +1,177 @@
+#include <iostream>    // Стандартна бібліотека вводу/виводу
+#include <climits>     // Для використання INT_MIN
+#include <string>      // Для зчитування рядків
+#include <cstdio>      // Для sscanf
+
+using namespace std;
+
+const int M = 20, N = 20; // Максимальні розміри матриці
+
+// Оголошення функцій
+void task1(); // Завдання 1
+void task2(); // Завдання 2
+void get_matr(int matr[M][N], int &rows, int &cols); // Введення матриці
+void show_matr(const int matr[M][N], int rows, int cols); // Виведення матриці
+bool is_sorted_up(const int matr[M][N], int rows, int col); // Перевірка на зростання
+bool is_sorted_down(const int matr[M][N], int rows, int col); // Перевірка на спадання
+int max_in_column(const int matr[M][N], int rows, int col); // Максимум у стовпці
+
+// Головна функція
+int main() {
+    int choice;
+    do {
+        cout << "\n===============================" << endl;
+        cout << "Меню:\n";
+        cout << "1 - Завдання 1 (максимум серед упорядкованих стовпців)\n";
+        cout << "2 - Завдання 2 (обмін стовпців K1 і K2)\n";
+        cout << "0 - Вихід\n";
+        cout << "Ваш вибір: ";
+        cin >> choice;
+
+        switch (choice) {
+            case 0:
+                cout << "Завершення програми..." << endl;
+                break;
+            case 1:
+                task1();
+                break;
+            case 2:
+                task2();
+                break;
+            default:
+                cout << "Неправильний номер завдання!" << endl;
+        }
+    } while (choice != 0);
+
+    return 0;
+}
+
+// Функція введення матриці
+void get_matr(int matr[M][N], int &rows, int &cols) {
+    do {
+        cout << "Введіть кількість рядків (2-20): ";
+        cin >> rows;
+        cout << "Введіть кількість стовпців (2-20): ";
+        cin >> cols;
+    } while (rows < 2 || rows > M || cols < 2 || cols > N); // Перевірка коректності
+
+    cout << "Введіть елементи матриці:" << endl;
+    for (int i = 0; i < rows; i++)
+        for (int j = 0; j < cols; j++) {
+            cout << "matr[" << i + 1 << "][" << j + 1 << "] = ";
+            cin >> matr[i][j];
+        }
+}
+
+// Функція виведення матриці
+void show_matr(const int matr[M][N], int rows, int cols) {
+    cout << "\nМатриця:" << endl;
+    for (int i = 0; i < rows; i++) {
+        for (int j = 0; j < cols; j++)
+            cout << matr[i][j] << "\t";
+        cout << endl;
+    }
+}
+
+// Чи впорядкований стовпець по зростанню
+bool is_sorted_up(const int matr[M][N], int rows, int col) {
+    for (int i = 0; i < rows - 1; i++)
+        if (matr[i][col] > matr[i + 1][col])
+            return false;
+    return true;
+}
+
+// Чи впорядкований стовпець по спаданню
+bool is_sorted_down(const int matr[M][N], int rows, int col) {
+    for (int i = 0; i < rows - 1; i++)
+        if (matr[i][col] < matr[i + 1][col])
+            return false;
+    return true;
+}
+
+// Знаходження максимуму в стовпці
+int max_in_column(const int matr[M][N], int rows, int col) {
+    int max_val = matr[0][col];
+    for (int i = 1; i < rows; i++)
+        if (matr[i][col] > max_val)
+            max_val = matr[i][col];
+    return max_val;
+}
+
+// Matrix45.Дана матриця розміру M × N. Знайти максимальний серед елементів тих стовпців, які впорядковані або по зростанню, або по спадаючій. Якщо впорядковані стовпці в матриці відсутні, то вивести 0.
+void task1() {
+    int matr[M][N], rows, cols;
+    get_matr(matr, rows, cols);
+    show_matr(matr, rows, cols);
+
+    int max_element = INT_MIN;
+    bool found = false;
+
+    // Перевірка кожного стовпця
+    for (int j = 0; j < cols; j++) {
+        if (is_sorted_up(matr, rows, j) || is_sorted_down(matr, rows, j)) {
+            int cur_max = max_in_column(matr, rows, j);
+            if (!found || cur_max > max_element) {
+                max_element = cur_max;
+                found = true;
+            }
+        }
+    }
+
+    if (found)
+        cout << "\nМаксимум серед елементів впорядкованих стовпців: " << max_element << endl;
+    else
+        cout << "\nВ матриці немає впорядкованих стовпців. Результат: 0" << endl;
+}
+
+// Matrix48. Дана матриця розміру M × N і цілі числа K1 і K2 (1 ≤ K1 <K2 ≤ N). Поміняти місцями стовпці матриці з номерами K1 і K2.
+void task2() {
+    int matr[M][N], rows, cols;
+    get_matr(matr, rows, cols);
+    show_matr(matr, rows, cols);
+
+    int k1, k2;
+
+    // Повторне введення, поки не буде коректно
+    do {
+        cout << "Введіть номери стовпців K1 і K2 для обміну (від 1 до " << cols << "): ";
+
+        cin.clear();
+        cin.ignore(INT_MAX, '\n');
+
+        string line;
+        getline(cin, line);
+
+        int parsed = sscanf(line.c_str(), "%d %d", &k1, &k2);
+
+        if (parsed < 2) {
+            if (parsed == 1)
+                cout << "Введено лише одне число. Потрібно два!\n";
+            else
+                cout << "Некоректне введення. Введіть два цілі числа через пробіл.\n";
+            continue;
+        }
+
+        if (k1 < 1 || k2 < 1 || k1 > cols || k2 > cols) {
+            cout << "Номери мають бути в межах від 1 до " << cols << ".\n";
+            continue;
+        }
+
+        if (k1 == k2) {
+            cout << "Номери стовпців повинні бути різними!\n";
+            continue;
+        }
+
+        break;
+    } while (true);
+
+    // Обмін значень у стовпцях
+    for (int i = 0; i < rows; i++) {
+        int temp = matr[i][k1 - 1];
+        matr[i][k1 - 1] = matr[i][k2 - 1];
+        matr[i][k2 - 1] = temp;
+    }
+
+    cout << "\nМатриця після обміну стовпців " << k1 << " і " << k2 << ":\n";
+    show_matr(matr, rows, cols);
+}
